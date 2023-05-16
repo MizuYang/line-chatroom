@@ -1,0 +1,102 @@
+[
+  {
+    "subjectId": 1,
+    "name": "初級檢定考古題討論區",
+    "description": "初級檢定考古題討論區的描述。",
+    "enabled": 1,
+    "deleted": 0,
+    "unreadFlag": true,
+    "unreadCount": 15,
+    "newestTime": "2023-05-03 10:02:00"
+  },
+  {
+    "subjectId": 2,
+    "name": "指甲彩繪風格分享討論區",
+    "description": "指甲彩繪風格分享討論區的描述。",
+    "enabled": 1,
+    "deleted": 0,
+    "unreadFlag": true,
+    "unreadCount": 15,
+    "newestTime": "2023-05-03 11:15:00"
+  },
+  {
+    "subjectId": 3,
+    "name": "某課程討論區",
+    "description": "某課程討論區的描述。",
+    "enabled": 1,
+    "deleted": 0,
+    "unreadFlag": true,
+    "unreadCount": 15,
+    "newestTime": "2023-05-03 14:43:00"
+  },
+  {
+    "subjectId": 4,
+    "name": "學習筆記分享討論區",
+    "description": "學習筆記分享討論區的描述。",
+    "enabled": 1,
+    "deleted": 0,
+    "unreadFlag": true,
+    "unreadCount": 15,
+    "newestTime": "2023-05-05 09:02:00"
+  },
+  {
+    "subjectId": 5,
+    "name": "問題解答討論區",
+    "description": "問題解答討論區的描述。",
+    "enabled": 1,
+    "deleted": 0,
+    "unreadFlag": true,
+    "unreadCount": 15,
+    "newestTime": "2023-05-10 23:11:00"
+  },
+  {
+    "subjectId": 6,
+    "name": "程式設計學習討論區",
+    "description": "程式設計學習討論區的描述。",
+    "enabled": 1,
+    "deleted": 0,
+    "unreadFlag": true,
+    "unreadCount": 15,
+    "newestTime": "2023-05-10 23:25:00"
+  },
+  {
+    "subjectId": 7,
+    "name": "文學作品評論討論區",
+    "description": "文學作品評論討論區的描述。",
+    "enabled": 1,
+    "deleted": 0,
+    "unreadFlag": true,
+    "unreadCount": 15,
+    "newestTime": "2023-05-16 08:32:00"
+  },
+  {
+    "subjectId": 8,
+    "name": "音樂創作交流討論區",
+    "description": "音樂創作交流討論區的描述。",
+    "enabled": 1,
+    "deleted": 0,
+    "unreadFlag": true,
+    "unreadCount": 15,
+    "newestTime": "2023-05-16 11:44:00"
+  },
+  {
+    "subjectId": 9,
+    "name": "旅遊心得分享討論區",
+    "description": "旅遊心得分享討論區的描述。",
+    "enabled": 1,
+    "deleted": 0,
+    "unreadFlag": true,
+    "unreadCount": 15,
+    "newestTime": "2023-05-16 13:39:00"
+  },
+  {
+    "subjectId": 10,
+    "name": "美食餐廳推薦討論區",
+    "description": "美食餐廳推薦討論區的描述。",
+    "enabled": 1,
+    "deleted": 0,
+    "unreadFlag": true,
+    "unreadCount": 15,
+    "newestTime": "2023-05-16 16:55:00"
+  }
+]
