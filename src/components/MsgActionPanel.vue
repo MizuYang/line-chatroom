@@ -17,12 +17,10 @@
 </template>
 
 <script>
-
+import { mapActions } from 'vuex'
 export default {
 
   props: ['msg'],
-
-  emits: ['panelHide'],
 
   data () {
     return {
@@ -30,6 +28,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('chatBubble', ['panelHide']),
+
     copyText () {
       const el = document.createElement('input')
 
@@ -39,7 +39,7 @@ export default {
       document.execCommand('copy')
       document.body.removeChild(el)
 
-      this.$emit('panelHide')
+      this.panelHide()
     }
   },
 
