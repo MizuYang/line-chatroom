@@ -28,8 +28,8 @@
 
 <script>
 import NavBar from '@/components/layout/navbar/NavBar.vue'
-import ChatBubble from '@/components/chatroom/MyChatBubble.vue'
-import OtherChatBubble from '@/components/chatroom/OtherChatBubble.vue'
+import ChatBubble from '@/components/chatroom/chatBubble/MyChatBubble.vue'
+import OtherChatBubble from '@/components/chatroom/chatBubble/OtherChatBubble.vue'
 import FooterPanel from '@/components/chatroom/FooterPanel.vue'
 export default {
   name: 'chatRoom',
