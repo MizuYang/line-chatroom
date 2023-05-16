@@ -1,8 +1,18 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
-  {
+  { // 首頁
     path: '/',
+    name: 'home',
+    component: () => import('@/views/HomeView.vue')
+  },
+  { // 討論區列表
+    path: '/chatroomList',
+    name: 'chatroomList',
+    component: () => import('@/views/ChatRoomList.vue')
+  },
+  { // 討論區裡面
+    path: '/chatroom',
     name: 'chatroom',
     component: () => import('@/views/ChatRoom.vue')
   }
