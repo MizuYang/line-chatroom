@@ -203,11 +203,18 @@
   color: darkgray;
 }
 
-// 文字截斷 (記得限制寬度, 超出寬度的部分就會被截斷)
+// 文字截斷 - 單行 (記得限制寬度, 超出寬度的部分就會被截斷)
 .text-cut {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+// 文字截斷 - 兩行 (記得限制高度、寬度)
+.text-cut-line2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; // 限制文字高度為兩行
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 // 背景色
