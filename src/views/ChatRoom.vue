@@ -11,7 +11,7 @@
       <li class="d-flex align-items-start text-start mb-6" v-for="msg in val" :key="`msg-${msg.discussId}`">
 
          <!-- 尚未讀取分隔線 -->
-        <span class="w-100 d-inline-block bg-gainsboro text-light text-center raduis-20 my-10" v-if="msg.textContent==='以下尚未閱讀的訊息'">以下尚未閱讀的訊息</span>
+        <span class="w-100 d-inline-block bg-gainsboro text-light text-center raduis-20 my-10" ref="neverRead" v-if="msg.textContent==='以下尚未閱讀的訊息'">以下尚未閱讀的訊息</span>
 
         <!-- 右側: 自己的對話氣泡 -->
         <ChatBubble :msg="msg" v-else-if='msg.insertUser===myName'></ChatBubble>
@@ -66,35 +66,38 @@ export default {
 
   methods: {
     getMsg () {
-      this.$http.get('/api/chatContent.json')
-        .then(res => {
-          console.log(res)
-          // 組成我要的格式, // {0502: [當天所有對話], 0503: [當天所有對話]}
-          const data = res.data
-          let hasDividingLine = false
-          data.forEach(item => {
-            const date = item.insertDate.split(' ')[0]
-            if (this.chatData[date]) {
-              this.chatData[date].push(item)
-              // 若有未讀訊息, 則在該訊息前加入未讀訊息的提示
-              if (!item.unreadFlag) {
-              // 若已有未讀訊息的分隔線, 就不再新增了 (只會有一個未讀分隔線)
-                if (hasDividingLine) return
-                const data = { ...item }
-                data.textContent = '以下尚未閱讀的訊息'
-                const index = this.chatData[date].length - 1
-                this.chatData[date].splice(index, 0, data)
-                hasDividingLine = true
+      return new Promise((resolve, reject) => {
+        this.$http.get('/api/chatContent.json')
+          .then(res => {
+            console.log(res)
+            // 組成我要的格式, // {0502: [當天所有對話], 0503: [當天所有對話]}
+            const data = res.data
+            let hasDividingLine = false
+            data.forEach(item => {
+              const date = item.insertDate.split(' ')[0]
+              if (this.chatData[date]) {
+                this.chatData[date].push(item)
+                // 若有未讀訊息, 則在該訊息前加入未讀訊息的提示
+                if (!item.unreadFlag) {
+                  // 若已有未讀訊息的分隔線, 就不再新增了 (只會有一個未讀分隔線)
+                  if (hasDividingLine) return
+                  const data = { ...item }
+                  data.textContent = '以下尚未閱讀的訊息'
+                  const index = this.chatData[date].length - 1
+                  this.chatData[date].splice(index, 0, data)
+                  hasDividingLine = true
+                }
+              } else {
+                this.chatData[date] = JSON.parse(JSON.stringify([item]))
               }
-            } else {
-              this.chatData[date] = JSON.parse(JSON.stringify([item]))
-            }
+            })
+            console.log(this.chatData)
+            resolve()
           })
-          console.log(this.chatData)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+          .catch(err => {
+            console.log(err)
+          })
+      })
     },
     getDay (day) {
       // 若日期是今天or昨天的日期 就回傳今天or昨天的字樣
@@ -122,8 +125,24 @@ export default {
     }
   },
 
-  mounted () {
-    this.getMsg()
+  async mounted () {
+    await this.getMsg()
+
+    let scrollPosition = null
+
+    // 判斷是否有未讀訊息
+    const hasNeverReadMsg = this.$refs.neverRead
+
+    // 若有未讀訊息, 進入討論區的畫面應在未讀訊息的位置(未讀訊息字樣上方會有一半畫面的高度)
+    if (hasNeverReadMsg) {
+      scrollPosition = this.$refs.neverRead[0].offsetTop - screen.height / 2
+    } else {
+      // 若無未讀訊息, 進入討論區的畫面應在最底部
+      scrollPosition = document.body.scrollHeight
+    }
+
+    // 使滾動條置底
+    window.scrollTo(0, scrollPosition)
   }
 }
 </script>
