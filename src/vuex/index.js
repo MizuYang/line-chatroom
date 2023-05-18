@@ -4,6 +4,7 @@ import { createStore } from 'vuex'
 // 其它store
 import chatBubble from '@/vuex/store/chatroom/chatBubble.js'
 import footerPanel from '@/vuex/store/chatroom/footerPanel.js'
+import allContentModal from '@/vuex/store/chatroom/allContentModal.js'
 
 export default createStore({
   strict: false, // 嚴謹模式
@@ -17,6 +18,7 @@ export default createStore({
   },
   modules: {
     chatBubble,
-    footerPanel
+    footerPanel,
+    allContentModal
   }
 })

@@ -14,7 +14,7 @@
         <span class="w-100 d-inline-block bg-gainsboro text-light text-center raduis-20 my-10" ref="neverRead" v-if="msg.textContent==='以下尚未閱讀的訊息'">以下尚未閱讀的訊息</span>
 
         <!-- 右側: 自己的對話氣泡 -->
-        <ChatBubble :msg="msg" v-else-if='msg.insertUser===myName'></ChatBubble>
+        <MyChatBubble :msg="msg" v-else-if='msg.insertUser===myName'></MyChatBubble>
 
         <!-- 左側: 其他人的對話氣泡 -->
         <OtherChatBubble :msg="msg" v-else></OtherChatBubble>
@@ -29,22 +29,28 @@
   <div class="position-fixed" v-if="isEmojiShow" style="right:20px;bottom:70px;">
     <EmojiPanel @emojiHide="emojiHide"></EmojiPanel>
   </div>
+
+  <!-- modal:顯示超出200字內容 -->
+  <AllContentModal v-if="isAllContentModalShow"></AllContentModal>
 </template>
 
 <script>
 import NavBar from '@/components/layout/navbar/NavBar.vue'
-import ChatBubble from '@/components/chatroom/chatBubble/MyChatBubble.vue'
+import MyChatBubble from '@/components/chatroom/chatBubble/MyChatBubble.vue'
 import OtherChatBubble from '@/components/chatroom/chatBubble/OtherChatBubble.vue'
 import FooterPanel from '@/components/chatroom/FooterPanel.vue'
 import EmojiPanel from '@/components/chatroom/EmojiPanel.vue'
+import AllContentModal from '@/components/chatroom/modal/AllContentModal.vue'
+import { mapState } from 'vuex'
 export default {
   name: 'chatRoom',
   components: {
     NavBar,
-    ChatBubble,
+    MyChatBubble,
     OtherChatBubble,
     FooterPanel,
-    EmojiPanel
+    EmojiPanel,
+    AllContentModal
   },
 
   data () {
@@ -62,6 +68,10 @@ export default {
       },
       isEmojiShow: false
     }
+  },
+
+  computed: {
+    ...mapState('allContentModal', ['isAllContentModalShow'])
   },
 
   methods: {
