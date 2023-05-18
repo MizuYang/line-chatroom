@@ -7,7 +7,7 @@
     </header>
 
     <main class="position-relative pt-8 p-10" style="word-wrap:break-word;">
-      {{ messages.textContent }}
+      <pre style="white-space:pre-wrap;word-wrap:break-word;">{{ messages.textContent }}</pre>
     </main>
   </div>
 </template>

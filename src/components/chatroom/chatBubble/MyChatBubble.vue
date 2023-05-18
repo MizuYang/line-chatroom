@@ -15,7 +15,7 @@
              @mouseup="stopTimer"
              @touchstart="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
              @touchend="stopTimer"
-             style="max-width:250px;white-space: pre-wrap;"
+             style="max-width:250px;white-space:pre-wrap;word-wrap:break-word;"
              :style="`${msg.textContent.length>200&&'max-height:270px;'}`">{{ msg.textContent }}</pre>
         <!-- 訊息動作選單 -->
         <div class="position-absolute z100"
