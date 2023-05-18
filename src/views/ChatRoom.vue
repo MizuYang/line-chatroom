@@ -23,7 +23,12 @@
   </ul>
 
   <!-- 下方控制輸入區 -->
-  <FooterPanel></FooterPanel>
+  <FooterPanel @emojiHide="emojiHide" @emojiToggle="emojiToggle"></FooterPanel>
+
+  <!-- emoji -->
+  <div class="position-fixed" v-if="isEmojiShow" style="right:20px;bottom:70px;">
+    <EmojiPanel @emojiHide="emojiHide"></EmojiPanel>
+  </div>
 </template>
 
 <script>
@@ -31,13 +36,15 @@ import NavBar from '@/components/layout/navbar/NavBar.vue'
 import ChatBubble from '@/components/chatroom/chatBubble/MyChatBubble.vue'
 import OtherChatBubble from '@/components/chatroom/chatBubble/OtherChatBubble.vue'
 import FooterPanel from '@/components/chatroom/FooterPanel.vue'
+import EmojiPanel from '@/components/chatroom/EmojiPanel.vue'
 export default {
   name: 'chatRoom',
   components: {
     NavBar,
     ChatBubble,
     OtherChatBubble,
-    FooterPanel
+    FooterPanel,
+    EmojiPanel
   },
 
   data () {
@@ -53,10 +60,7 @@ export default {
         5: '五',
         6: '六'
       },
-      holdDownTimestamp: 0, // 滑鼠按住時的時間戳
-      timer: null,
-      isShowMsgActionPanel: null, // 當前顯示的訊息動作選單
-      eventListenStart: false
+      isEmojiShow: false
     }
   },
 
@@ -106,6 +110,15 @@ export default {
       const dayNumber = new Date(day).getDay()
       const dayCn = this.day[dayNumber]
       return `${date} (${dayCn})`
+    },
+    emojiToggle () {
+      this.isEmojiShow = !this.isEmojiShow
+    },
+    emojiShow () {
+      this.isEmojiShow = true
+    },
+    emojiHide () {
+      this.isEmojiShow = false
     }
   },
 
