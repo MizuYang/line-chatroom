@@ -1,5 +1,5 @@
 <template>
-  <footer class="position-fixed bottom-0 z100 w-100 d-flex align-items-center px-8" style="height:66px;background-color:#CBE6FF;">
+  <footer class="position-fixed bottom-0 z110 w-100 d-flex align-items-center px-8" style="height:66px;background-color:#CBE6FF;">
     <button type="button" class="btn me-6 p-0">
       <img src='@/assets/images/chatroom/檔案上傳.svg' alt='檔案上傳'>
     </button>

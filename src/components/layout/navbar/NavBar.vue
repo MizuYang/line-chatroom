@@ -1,5 +1,5 @@
 <template>
-  <nav class="position-fixed top-0 z100 w-100"
+  <nav class="position-fixed top-0 z110 w-100"
        style="background-color:#53ACFF;min-height:96px;">
   </nav>
 </template>

@@ -18,7 +18,7 @@
              style="max-width:250px;white-space: pre-wrap;"
              :style="`${msg.textContent.length>200&&'max-height:270px;'}`">{{ msg.textContent }}</pre>
         <!-- 訊息動作選單 -->
-        <div class="position-absolute"
+        <div class="position-absolute z100"
               :class="{'d-none':`msgActionPanel-${msg.discussId}`!==isShowMsgActionPanel}"
               :ref="`msgActionPanel-${msg.discussId}`" style="top:-60px;">
           <MsgActionPanel :msg="msg.textContent"></MsgActionPanel>

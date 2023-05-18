@@ -3,7 +3,7 @@
     <NavBar></NavBar>
   </header>
 
-  <nav class="position-fixed top-0 w-100" style="background-color:#CBE6FF;margin-top:96px;padding:8px 0;">
+  <nav class="position-fixed top-0 z100 w-100" style="background-color:#CBE6FF;margin-top:96px;padding:8px 0;">
     <input type="search" class="form-control raduis-5 placeholder-ps30 mx-auto" v-model="searchTxt" @focus="isFocus=true" @blur="isFocus=false" style="width:350px;">
 
     <div class="position-absolute d-flex align-items-center" style="top:50%;left:32px;transform:translateY(-50%)" v-if="!isFocus&&!searchTxt">
@@ -13,12 +13,18 @@
   </nav>
 
   <ul class="ms-8" style="margin-top:170px;">
-    <li class="mb-11" v-for="topic in cahtroomList" :key="`chatroom-${topic.subjectId}`">
-      <button type="button" class="w-100 btn p-0" @click="enterChatroom(topic)">
-        <!-- 討論區話題元件 -->
-        <TopicArea :topic="topic"></TopicArea>
-      </button>
-    </li>
+    <template v-if="data.length>0">
+      <li class="mb-11" v-for="topic in data" :key="`chatroom-${topic.subjectId}`">
+        <button type="button" class="w-100 btn p-0" @click="enterChatroom(topic)">
+          <!-- 討論區話題元件 -->
+          <TopicArea :topic="topic"></TopicArea>
+        </button>
+      </li>
+    </template>
+    <!-- 關鍵字搜尋不到相關討論區名稱 -->
+    <template v-else>
+      <p class="text-20 text-center">找不到符合您搜尋的討論區名稱</p>
+    </template>
   </ul>
 
 </template>
@@ -37,6 +43,16 @@ export default {
       cahtroomList: [],
       isFocus: false,
       searchTxt: ''
+    }
+  },
+
+  computed: {
+    data () {
+      if (this.searchTxt) {
+        return this.cahtroomList.filter(item => item.name.includes(this.searchTxt))
+      } else {
+        return this.cahtroomList
+      }
     }
   },
 

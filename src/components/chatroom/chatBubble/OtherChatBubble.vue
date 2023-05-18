@@ -19,7 +19,7 @@
       <time class="text-silver text-12 mt-auto ms-3">{{ msg.insertDate.split(' ')[1].slice(0,5) }}</time>
 
       <!-- 訊息動作選單 -->
-      <div class="position-absolute"
+      <div class="position-absolute z100"
             :class="{'d-none':`msgActionPanel-${msg.discussId}`!==isShowMsgActionPanel}"
             :ref="`msgActionPanel-${msg.discussId}`" style="top:-60px;">
         <MsgActionPanel :msg="msg.textContent"></MsgActionPanel>
