@@ -71,7 +71,8 @@ export default {
   },
 
   computed: {
-    ...mapState('allContentModal', ['isAllContentModalShow'])
+    ...mapState('allContentModal', ['isAllContentModalShow']),
+    ...mapState('footerPanel', ['cursorIndex', 'msgInputEl'])
   },
 
   methods: {
@@ -126,6 +127,11 @@ export default {
     },
     emojiToggle () {
       this.isEmojiShow = !this.isEmojiShow
+      // 給予光標位置
+      this.msgInputEl.focus()
+      let index = this.cursorIndex
+      if (this.cursorIndex === -1) index = this.msgInputEl.value.length
+      this.msgInputEl.setSelectionRange(index, index)
     },
     emojiShow () {
       this.isEmojiShow = true
