@@ -23,11 +23,11 @@
   </ul>
 
   <!-- 下方控制輸入區 -->
-  <FooterPanel @emojiHide="emojiHide" @emojiToggle="emojiToggle"></FooterPanel>
+  <FooterPanel></FooterPanel>
 
   <!-- emoji -->
   <div class="position-fixed" v-if="isEmojiShow" style="right:20px;bottom:70px;">
-    <EmojiPanel @emojiHide="emojiHide"></EmojiPanel>
+    <EmojiPanel></EmojiPanel>
   </div>
 
   <!-- modal:顯示超出200字內容 -->
@@ -66,16 +66,18 @@ export default {
         5: '五',
         6: '六'
       },
-      isEmojiShow: false
+      neverReadMsg: []
     }
   },
 
   computed: {
+    ...mapState('emoji', ['isEmojiShow']),
     ...mapState('allContentModal', ['isAllContentModalShow']),
     ...mapState('footerPanel', ['cursorIndex', 'msgInputEl'])
   },
 
   methods: {
+
     getMsg () {
       return new Promise((resolve, reject) => {
         this.$http.get('/api/chatContent.json')
@@ -125,40 +127,32 @@ export default {
       const dayCn = this.day[dayNumber]
       return `${date} (${dayCn})`
     },
-    emojiToggle () {
-      this.isEmojiShow = !this.isEmojiShow
-      // 給予光標位置
-      this.msgInputEl.focus()
-      let index = this.cursorIndex
-      if (this.cursorIndex === -1) index = this.msgInputEl.value.length
-      this.msgInputEl.setSelectionRange(index, index)
-    },
-    emojiShow () {
-      this.isEmojiShow = true
-    },
-    emojiHide () {
-      this.isEmojiShow = false
+    scrollHandle () {
+      return new Promise((resolve, reject) => {
+        let scrollPosition = null
+
+        // 判斷是否有未讀訊息
+        const hasNeverReadMsg = this.$refs.neverRead
+
+        // 若有未讀訊息, 進入討論區的畫面應在未讀訊息的位置(未讀訊息字樣上方會有一半畫面的高度)
+        if (hasNeverReadMsg) {
+          scrollPosition = this.$refs.neverRead[0].offsetTop - screen.height / 2
+        } else {
+          // 若無未讀訊息, 進入討論區的畫面應在最底部
+          scrollPosition = document.body.scrollHeight
+        }
+
+        // 使滾動條置底
+        window.scrollTo(0, scrollPosition)
+
+        resolve()
+      })
     }
   },
 
   async mounted () {
     await this.getMsg()
-
-    let scrollPosition = null
-
-    // 判斷是否有未讀訊息
-    const hasNeverReadMsg = this.$refs.neverRead
-
-    // 若有未讀訊息, 進入討論區的畫面應在未讀訊息的位置(未讀訊息字樣上方會有一半畫面的高度)
-    if (hasNeverReadMsg) {
-      scrollPosition = this.$refs.neverRead[0].offsetTop - screen.height / 2
-    } else {
-      // 若無未讀訊息, 進入討論區的畫面應在最底部
-      scrollPosition = document.body.scrollHeight
-    }
-
-    // 使滾動條置底
-    window.scrollTo(0, scrollPosition)
+    await this.scrollHandle()
   }
 }
 </script>

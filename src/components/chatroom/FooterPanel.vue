@@ -9,7 +9,7 @@
 
     <div class="position-relative me-4">
       <textarea rows="1" class="form-control raduis-20" ref="myInput" :value="messages" @change="updateMsg" @click="getCursorIndex" @keydown="handleKeyDown" style="width:230px;height:36px;resize:none;padding-right:37px;"></textarea>
-      <button type="button" class="position-absolute end-0 emoji d-flex align-items-center btn me-5 p-0" @click="$emit('emojiToggle')" style="top:50%;transform:translateY(-50%);">
+      <button type="button" class="position-absolute end-0 emoji d-flex align-items-center btn me-5 p-0" @click="emojiToggle" style="top:50%;transform:translateY(-50%);">
         <img src='@/assets/images/chatroom/表情符號.svg' class="d-inline-block" alt='表情符號'>
       </button>
     </div>
@@ -21,10 +21,8 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 export default {
-
-  emits: ['emojiHide', 'emojiToggle'],
 
   data () {
     return {
@@ -36,6 +34,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('emoji', ['emojiToggle']),
+    ...mapMutations('emoji', ['EMOJI_HIDE']),
     ...mapMutations('footerPanel', ['UPDATE_MESSAGES', 'UPDATE_CURSOR_INDEX', 'GET_INPUT_EL']),
 
     updateMsg (e) {
@@ -55,7 +55,7 @@ export default {
       }
     },
     sendMsg () {
-      this.$emit('emojiHide')
+      this.EMOJI_HIDE()
     }
   },
 

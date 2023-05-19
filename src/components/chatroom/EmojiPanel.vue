@@ -19,8 +19,6 @@ export default {
     Picker
   },
 
-  emits: ['emojiHide'],
-
   data () {
     return {
       emojiIndex: emojiIndex
@@ -32,6 +30,7 @@ export default {
   },
 
   methods: {
+    ...mapMutations('emoji', ['EMOJI_HIDE']),
     ...mapMutations('footerPanel', ['UPDATE_MESSAGES']),
 
     showEmoji (emoji) {
@@ -65,7 +64,7 @@ export default {
       })
 
       if (!isClickEmoji) {
-        this.$emit('emojiHide')
+        this.EMOJI_HIDE()
         document.removeEventListener('click', this.noClickEmojiPanelHide)
       }
     }
