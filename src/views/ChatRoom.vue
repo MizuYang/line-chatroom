@@ -70,13 +70,12 @@ export default {
         6: '六'
       },
       neverReadMsg: [],
-      canViewHeight: { // 螢幕可視高度:上方、下方
-        top: 0,
+      canViewHeight: { // 螢幕可視高度:下方
         bottom: 0
       },
       isScrollLoading: false, // 節流
       num: 0, //! 測試查看捲動次數
-      isPhone: true, //! 測試裝置為手機
+      isPhone: false, //! 測試裝置為手機
       // const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())
       scrollHeight: 0 // 當前捲動條高度(用來判斷畫面是否滾動中)
     }
@@ -142,8 +141,8 @@ export default {
       const dayCn = this.day[dayNumber]
       return `${date} (${dayCn})`
     },
-    // 初始化移動卷軸到對話底部or未讀訊息位置 + 取得可視畫面top、bottom初始值
-    scrollHandle () {
+    // [初始化]移動卷軸到對話底部or未讀訊息位置 + 取得可視畫面bottom初始值
+    scrollHandleInit () {
       return new Promise((resolve, reject) => {
         let scrollPosition = null
 
@@ -161,18 +160,15 @@ export default {
         // 控制滾動條位置
         this.$refs.msgList.scrollTo(0, scrollPosition)
 
-        // ul元素當前高度 + 導航列高度
-        const top = this.$refs.msgList.scrollTop + 96
         // (ul元素當前高度 + 螢幕高度) - 訊息欄位高度
         const bottom = (this.$refs.msgList.scrollTop + window.innerHeight) - 66
         // 畫面一進來進入可視區域 被已讀的訊息(可視畫面初始數值)
-        this.canViewHeight.top = top
         this.canViewHeight.bottom = bottom
 
         resolve()
       })
     },
-    // @scroll:滑動狀態中持續 更新可視畫面top、bottom
+    // @scroll:滑動狀態中持續 更新可視畫面bottom
     async updateCanViewPosition () {
       // 有未讀訊息才執行
       if (this.neverReadMsg.length === 0) return
@@ -192,17 +188,12 @@ export default {
       // 可視畫面的底部高度 < 未讀訊息的螢幕高度 就中斷(接近未閱讀訊息才開始執行)
       if (bottomHeight < this.$refs.neverRead[0].offsetTop) return
 
-      // 上方可視範圍高度 = 列表元素在瀏覽器的高度 + navbar
-      this.canViewHeight.top = this.$refs.msgList.scrollTop + 96
       // 下方可視範圍高度 = (列表元素在瀏覽器的高度+螢幕高度) - 對話控制欄位高度
       this.canViewHeight.bottom = bottomHeight
 
-      console.log('可視畫面top: ', this.canViewHeight.top)
       console.log('可視畫面bottom: ', this.canViewHeight.bottom)
 
-      await this.checkReadStatus()
-
-      this.scrollStopCheckReadStatus()
+      this.checkReadStatus()
 
       this.isScrollLoading = true
     },
@@ -215,7 +206,6 @@ export default {
 
         const obj = { ...msg }
         const el = document.querySelector(`#msg-${msg.discussId}`)
-        obj.top = el.parentElement.offsetTop
         // 底部高度 = 元素上方高度 + 元素本身的高度
         obj.bottom = el.parentElement.offsetTop + el.clientHeight
 
@@ -225,43 +215,12 @@ export default {
       this.neverReadMsg = neverReadMsg
       console.log('未讀訊息列表', this.neverReadMsg)
     },
-    // 檢查對話氣泡是否已讀
+    // @捲動的畫面停止後 檢查是否有已讀的訊息
     checkReadStatus () {
-      return new Promise((resolve, reject) => {
-        const newNeverReadMsg = [...this.neverReadMsg]
-        // 從未讀data判斷是否達成已讀條件
-        this.neverReadMsg.forEach(msg => {
-          // 對話氣泡上方高度 > 可視畫面高度 && 對話氣泡下方高度 < 可視畫面高度
-          if (msg.top >= this.canViewHeight.top && msg.bottom <= this.canViewHeight.bottom) {
-            // 此處為已讀的訊息
-            console.log('已讀的訊息：', msg.textContent)
-
-            //! testBg 測試用 (已讀的文字會變綠色)
-            setTimeout(() => {
-              this.$refs[`msg-${msg.discussId}`][0].msg.testBg = true
-            }, 100)
-
-            //! 發送API給後端, 說此訊息已讀了
-            //! 程式碼 { ... }
-            //! 程式碼 { ... }
-
-            // 將已讀的訊息從neverReadMsg刪除
-            const deleteIndex = newNeverReadMsg.findIndex(item => item.discussId === msg.discussId)
-            newNeverReadMsg.splice(deleteIndex, 1)
-          }
-        })
-        this.neverReadMsg = [...newNeverReadMsg]
-
-        resolve()
-      })
-    },
-    // @畫面停止後確認: 判斷用戶畫面的畫面停止了, 再判斷未讀data是否有"應該"是已讀的訊息
-    scrollStopCheckReadStatus () {
       // 例：假設用戶用非常快的畫面速度滑到下面, 最下面會被已讀, 但中間快速滑過的部分會是未讀
       // 此函式處理這個問題
       // (因為有做捲動節流, 防止行動版負荷過大)
       // 原理：用戶手指抬起後, 200毫秒後檢查卷軸高度若與剛才一樣, 代表畫面停止
-      console.log('用戶手指抬起了')
 
       // 1. 先記錄當前捲動的高度為置
       this.scrollHeight = this.$refs.msgList.scrollTop
@@ -282,9 +241,7 @@ export default {
               console.log('已讀的訊息：', msg.textContent)
 
               //! testBg 測試用 (已讀的文字會變綠色)
-              setTimeout(() => {
-                this.$refs[`msg-${msg.discussId}`][0].msg.testBg = true
-              }, 100)
+              this.$refs[`msg-${msg.discussId}`][0].msg.testBg = true
 
               //! 發送API給後端, 說此訊息已讀了
               //! 程式碼 { ... }
@@ -309,8 +266,8 @@ export default {
   async mounted () {
     await this.getMsg()
     this.getNeverReadMsgPosition()
-    await this.scrollHandle()
-    await this.checkReadStatus()
+    await this.scrollHandleInit()
+    this.checkReadStatus()
   }
 }
 </script>
