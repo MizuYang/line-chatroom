@@ -10,7 +10,8 @@
       <!-- 內容 -->
       <div class="position-relative">
         <pre class="text-start bg-fff triangle-right raduis-10 ms-2 mb-0 ps-6 pe-4 py-2"
-             :class="{'overflow-hidden':msg.textContent.length>200}"
+             :class="{'overflow-hidden':msg.textContent.length>200, 'text-success fw-bold-7':msg.testBg}"
+             :id="`msg-${msg.discussId}`"
              @mousedown="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
              @mouseup="stopTimer"
              @touchstart="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"

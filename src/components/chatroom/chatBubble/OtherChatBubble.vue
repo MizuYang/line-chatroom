@@ -7,7 +7,8 @@
     <div class="position-relative d-flex">
       <!-- 內容: 200字(若超過200字:限制最大高度、隱藏超出內容) -->
       <pre class="text-start bg-fff triangle-left raduis-10 ms-2 mb-0 ps-6 pe-4 py-2"
-           :class="{'overflow-hidden':msg.textContent.length>200}"
+           :class="{'overflow-hidden':msg.textContent.length>200, 'text-success fw-bold-7':msg.testBg}"
+           :id="`msg-${msg.discussId}`"
            @mousedown="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
            @mouseup="stopTimer"
            @touchstart="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
