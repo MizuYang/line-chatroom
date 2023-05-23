@@ -95,10 +95,20 @@ export default {
             console.log(res)
             this.data = res.data
 
-            // 組成我要的格式, // {0502: [當天所有對話], 0503: [當天所有對話]}
-            // 並在第一個未讀訊息前加入 "以下尚未閱讀的訊息" 分隔線
             const data = res.data
             let hasDividingLine = false
+
+            // 處理對話的回覆訊息
+            data.forEach((msg, mIndex) => {
+              // 不是回覆對話的訊息就中斷
+              if (!msg.replyId) return
+              // 抓出回覆的那則訊息
+              const replyData = data.filter(item => msg.replyId === item.discussId)
+              data[mIndex].replyData = { ...replyData[0] }
+            })
+
+            // 組成我要的格式, // {0502: [當天所有對話], 0503: [當天所有對話]}
+            // 並在第一個未讀訊息前加入 "以下尚未閱讀的訊息" 分隔線
             data.forEach(item => {
               const date = item.insertDate.split(' ')[0]
               if (this.chatData[date]) {

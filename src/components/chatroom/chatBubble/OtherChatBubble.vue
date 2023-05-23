@@ -6,15 +6,29 @@
     <p class="text-12 text-gray fw-bold-5 mb-2">{{ msg.insertUser }}</p>
     <div class="position-relative d-flex">
       <!-- 內容: 200字(若超過200字:限制最大高度、隱藏超出內容) -->
-      <pre class="text-start bg-fff triangle-left raduis-10 ms-2 mb-0 ps-6 pe-4 py-2"
-           :class="{'overflow-hidden':msg.textContent.length>200, 'text-success fw-bold-7':msg.testBg}"
-           :id="`msg-${msg.discussId}`"
-           @mousedown="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
-           @mouseup="stopTimer"
-           @touchstart="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
-           @touchend="stopTimer"
-           style="max-width:250px;white-space:pre-wrap;word-wrap:break-word;"
-           :style="`${msg.textContent.length>200&&'max-height:270px;'}`">{{ msg.textContent }}</pre>
+      <p class="text-start bg-fff triangle-left raduis-10 ms-2 mb-0" :id="`msg-${msg.discussId}`" style="max-width:250px;">
+        <!-- 回覆訊息 -->
+        <template v-if='msg.replyId'>
+          <div class="d-flex align-items-start border-bottom text-cut-line2 ps-6 pe-4 py-4">
+            <!-- 姓氏(頭貼) -->
+            <span class="rounded-pill text-12 fw-bold-5 me-2" style="background-color:#FFC7A4;padding:3px 6px 4px 6px;">{{ msg?.replyData?.insertUser?.split('')[0] }}</span>
+            <div>
+              <!-- 姓名 -->
+              <p class="text-12 text-gray fw-bold-5" style="margin-bottom:2px;">{{ msg?.replyData?.insertUser }}</p>
+              <!-- 內容 -->
+              <p class="text-12 text-gray" style="max-height:30px;">{{ msg?.replyData?.textContent }}</p>
+            </div>
+          </div>
+        </template>
+        <pre class="ps-6 pe-4 py-2 mb-0"
+             :class="{'overflow-hidden':msg.textContent.length>200, 'text-success fw-bold-7':msg.testBg}"
+             @mousedown="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
+             @mouseup="stopTimer"
+             @touchstart="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
+             @touchend="stopTimer"
+             style="max-width:250px;white-space:pre-wrap;word-wrap:break-word;"
+             :style="`${msg.textContent.length>200&&'max-height:270px;'}`">{{ msg.textContent }}</pre>
+      </p>
 
       <!-- 時間 -->
       <time class="text-silver text-12 mt-auto ms-3">{{ msg.insertDate.split(' ')[1].slice(0,5) }}</time>
