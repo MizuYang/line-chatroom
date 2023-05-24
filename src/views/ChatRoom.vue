@@ -2,7 +2,7 @@
   <!-- 導航列 -->
   <NavBar></NavBar>
 
-  <ul class="overflow-scroll pt-5 px-8" ref="msgList"
+  <ul class="overflow-scroll pt-5 px-8" id="msgList" ref="msgList"
       @scroll.passive="isPhone||updateCanViewPosition()"
       @touchmove="isPhone&&updateCanViewPosition()"
       style="height: calc(100vh - 162px);background-color:#F5F5F5;margin-top:96px;">
@@ -34,16 +34,22 @@
 
   <!-- modal:顯示超出200字內容 -->
   <AllContentModal v-if="isAllContentModalShow"></AllContentModal>
+
+  <!-- 回覆提示 -->
+  <div class="position-fixed z100 w-100 bg-dark" style="bottom:66px;">
+    <ReplyTips></ReplyTips>
+  </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import NavBar from '@/components/layout/navbar/NavBar.vue'
 import MyChatBubble from '@/components/chatroom/chatBubble/MyChatBubble.vue'
 import OtherChatBubble from '@/components/chatroom/chatBubble/OtherChatBubble.vue'
 import FooterPanel from '@/components/chatroom/FooterPanel.vue'
 import EmojiPanel from '@/components/chatroom/EmojiPanel.vue'
 import AllContentModal from '@/components/chatroom/modal/AllContentModal.vue'
-import { mapState } from 'vuex'
+import ReplyTips from '@/components/chatroom/ReplyTips.vue'
 export default {
   name: 'chatRoom',
   components: {
@@ -52,7 +58,8 @@ export default {
     OtherChatBubble,
     FooterPanel,
     EmojiPanel,
-    AllContentModal
+    AllContentModal,
+    ReplyTips
   },
 
   data () {
@@ -75,13 +82,12 @@ export default {
       },
       isScrollLoading: false, // 節流
       num: 0, //! 測試查看捲動次數
-      isPhone: false, //! 測試裝置為手機
-      // const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())
       scrollHeight: 0 // 當前捲動條高度(用來判斷畫面是否滾動中)
     }
   },
 
   computed: {
+    ...mapState(['isPhone']),
     ...mapState('emoji', ['isEmojiShow']),
     ...mapState('allContentModal', ['isAllContentModalShow']),
     ...mapState('footerPanel', ['cursorIndex', 'msgInputEl'])

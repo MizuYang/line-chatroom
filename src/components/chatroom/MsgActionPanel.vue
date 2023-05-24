@@ -11,13 +11,14 @@
     </li>
     <li class="flex-shrink-0">
       <button type="button" class="btn bg-dimgray text-light px-7 py-5"
+              @click="reply"
               style="border-radius:0 8px 8px 0;">回覆</button>
     </li>
   </ul>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 export default {
 
   props: ['msg'],
@@ -29,16 +30,21 @@ export default {
 
   methods: {
     ...mapActions('chatBubble', ['panelHide']),
+    ...mapMutations('msgActionPanel', ['GET_REPLY_OBJECT']),
 
     copyText () {
       const el = document.createElement('input')
 
       document.body.appendChild(el)
-      el.value = this.msg
+      el.value = this.msg.textContent
       el.select()
       document.execCommand('copy')
       document.body.removeChild(el)
 
+      this.panelHide()
+    },
+    reply () {
+      this.GET_REPLY_OBJECT(this.msg)
       this.panelHide()
     }
   },

@@ -6,7 +6,13 @@
     <p class="text-12 text-gray fw-bold-5 mb-2">{{ msg.insertUser }}</p>
     <div class="position-relative d-flex">
       <!-- 內容: 200字(若超過200字:限制最大高度、隱藏超出內容) -->
-      <p class="text-start bg-fff triangle-left raduis-10 ms-2 mb-0" :id="`msg-${msg.discussId}`" style="max-width:250px;">
+      <p class="text-start bg-fff triangle-left raduis-10 ms-2 mb-0"
+         @mousedown="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
+         @mouseup="stopTimer"
+         @touchstart="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
+         @touchend="stopTimer"
+         :id="`msg-${msg.discussId}`"
+         style="max-width:250px;">
         <!-- 回覆訊息 -->
         <template v-if='msg.replyId'>
           <div class="d-flex align-items-start border-bottom text-cut-line2 ps-6 pe-4 py-4">
@@ -22,10 +28,6 @@
         </template>
         <pre class="ps-6 pe-4 py-2 mb-0"
              :class="{'overflow-hidden':msg.textContent.length>200, 'text-success fw-bold-7':msg.testBg}"
-             @mousedown="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
-             @mouseup="stopTimer"
-             @touchstart="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
-             @touchend="stopTimer"
              style="max-width:250px;white-space:pre-wrap;word-wrap:break-word;"
              :style="`${msg.textContent.length>200&&'max-height:270px;'}`">{{ msg.textContent }}</pre>
       </p>
@@ -37,12 +39,13 @@
       <div class="position-absolute z100"
             :class="{'d-none':`msgActionPanel-${msg.discussId}`!==isShowMsgActionPanel}"
             :ref="`msgActionPanel-${msg.discussId}`" style="top:-60px;">
-        <MsgActionPanel :msg="msg.textContent"></MsgActionPanel>
+        <MsgActionPanel :msg="msg"></MsgActionPanel>
       </div>
     </div>
 
     <!-- 內容超過兩百字-顯示全部內容 -->
     <button type="button" class="btn d-flex align-items-center text-start z100 ms-2"
+            :id="`msg-btn-${msg.discussId}`"
             v-if="msg.textContent.length>200"
             @click="allContentShow"
             style="max-width:250px;background-color:gainsboro;border-radius:0 0 10px 10px;margin-top:-10px;">
