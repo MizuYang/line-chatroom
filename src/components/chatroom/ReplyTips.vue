@@ -1,6 +1,6 @@
 <template>
   <div class="position-relative" v-if="replyMsg.discussId">
-    <div class="d-flex align-items-center ps-6 pe-4 py-4" @touchstart="moveToReply">
+    <button type="button" class="w-100 btn d-flex align-items-center text-start ps-6 pe-4 py-4" @mousedown.left="moveToReply" @touchstart="moveToReply">
       <!-- 姓氏(頭貼) -->
       <span class="rounded-pill text-12 fw-bold-5 me-2" style="background-color:#FFC7A4;padding:5px 8px">{{ replyMsg.insertUser?.split('')[0] }}</span>
       <div>
@@ -9,14 +9,14 @@
         <!-- 內容 -->
         <p class="text-12 text-gray text-cut" style="max-width:300px;">{{ replyMsg.textContent }}</p>
       </div>
-    </div>
+    </button>
 
     <button type="button" class="position-absolute top-0 end-0 btn x-icon m-0 p-0" @touchstart.prevent="clearReply"></button>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState, mapActions } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
 
@@ -31,7 +31,6 @@ export default {
   },
 
   methods: {
-    ...mapActions('msgActionPanel', ['moveToReply']),
     ...mapMutations('msgActionPanel', ['CLEAR_REPLY_OBJECT']),
 
     moveToReply (e) {
