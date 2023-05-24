@@ -7,9 +7,8 @@
     <div class="position-relative d-flex">
       <!-- 內容: 200字(若超過200字:限制最大高度、隱藏超出內容) -->
       <p class="text-start bg-fff triangle-left raduis-10 ms-2 mb-0"
-         @mousedown="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
-         @mouseup="stopTimer"
-         @touchstart="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
+         @mousedown.right="mousedownRight([$event,msg.discussId,this])"
+         @touchstart="touchKeepFiveSeconds([$event,msg.discussId,this])"
          @touchend="stopTimer"
          :id="`msg-${msg.discussId}`"
          style="max-width:250px;">
@@ -76,13 +75,19 @@ export default {
   },
 
   methods: {
-    ...mapActions('chatBubble', ['startTimer', 'stopTimer']),
+    ...mapActions('chatBubble', ['touchKeepFiveSeconds', 'mousedownRight', 'stopTimer']),
     ...mapMutations('allContentModal', ['GET_MESSAGES', 'MODAL_SHOW']),
 
     allContentShow () {
       this.GET_MESSAGES(this.msg)
       this.MODAL_SHOW()
     }
+    // touchKeepFiveSeconds () {
+
+    // },
+    // tt () {
+    //   console.log('你好棒棒')
+    // }
   },
 
   mounted () {

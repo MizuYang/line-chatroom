@@ -8,11 +8,11 @@
       <p class="d-flex">
         <!-- 群組名稱 -->
         <span class="text-cut fw-bold-7 mb-2 me-1">{{ topic.name }}</span>
-        ({{ topic.peopleNumber }})
+        ({{ topic.memberCount }})
       </p>
       <!-- 最新一則訊息 -->
       <p class="text-13 text-808080 text-start text-cut-line2" style="max-height:40px;">
-        {{ topic.messages }}
+        {{ topic.latestDiscuess }}
       </p>
     </div>
     <div class="d-flex flex-column ms-auto me-7">

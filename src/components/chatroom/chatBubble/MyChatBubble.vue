@@ -11,9 +11,8 @@
       <div class="position-relative">
         <p class="text-start bg-fff triangle-right raduis-10  ms-2 mb-0"
            :id="`msg-${msg.discussId}`"
-           @mousedown="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
-           @mouseup="stopTimer"
-           @touchstart="startTimer([$event,`msgActionPanel-${msg.discussId}`,this])"
+           @mousedown.right="mousedownRight([$event,msg.discussId,this])"
+           @touchstart="touchKeepFiveSeconds([$event,msg.discussId,this])"
            @touchend="stopTimer"
            style="max-width:250px;">
           <!-- 回覆訊息 -->
@@ -77,7 +76,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('chatBubble', ['startTimer', 'stopTimer']),
+    ...mapActions('chatBubble', ['touchKeepFiveSeconds', 'mousedownRight', 'stopTimer']),
     ...mapMutations('allContentModal', ['GET_MESSAGES', 'MODAL_SHOW']),
 
     allContentShow () {
