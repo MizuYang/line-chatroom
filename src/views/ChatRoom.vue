@@ -28,17 +28,22 @@
   <FooterPanel class="mt-15"></FooterPanel>
 
   <!-- emoji -->
-  <div class="position-fixed" v-if="isEmojiShow" style="right:20px;bottom:70px;">
+  <div class="position-fixed z110" v-if="isEmojiShow" style="right:20px;bottom:70px;">
     <EmojiPanel></EmojiPanel>
   </div>
 
   <!-- modal:顯示超出200字內容 -->
   <AllContentModal v-if="isAllContentModalShow"></AllContentModal>
 
-  <!-- 回覆提示 -->
   <div class="position-fixed z100 w-100 bg-dark" style="bottom:66px;">
+    <!-- 回覆提示 -->
     <ReplyTips></ReplyTips>
   </div>
+  <div class="position-fixed z100 w-100 text-center" :style="`bottom:${replyMsg?.discussId?140:75}px`">
+    <!-- 返回上一次的對話 -->
+    <GoBackBtn></GoBackBtn>
+  </div>
+
 </template>
 
 <script>
@@ -50,6 +55,7 @@ import FooterPanel from '@/components/chatroom/FooterPanel.vue'
 import EmojiPanel from '@/components/chatroom/EmojiPanel.vue'
 import AllContentModal from '@/components/chatroom/modal/AllContentModal.vue'
 import ReplyTips from '@/components/chatroom/ReplyTips.vue'
+import GoBackBtn from '@/components/chatroom/GoBackBtn.vue'
 export default {
   name: 'chatRoom',
   components: {
@@ -59,7 +65,8 @@ export default {
     FooterPanel,
     EmojiPanel,
     AllContentModal,
-    ReplyTips
+    ReplyTips,
+    GoBackBtn
   },
 
   data () {
@@ -89,6 +96,7 @@ export default {
   computed: {
     ...mapState(['isPhone']),
     ...mapState('emoji', ['isEmojiShow']),
+    ...mapState('msgActionPanel', ['replyMsg']),
     ...mapState('allContentModal', ['isAllContentModalShow']),
     ...mapState('footerPanel', ['cursorIndex', 'msgInputEl'])
   },
@@ -96,7 +104,9 @@ export default {
   methods: {
     getMsg () {
       return new Promise((resolve, reject) => {
-        this.$http.get('/api/chatContent.json')
+        const api = 'api/chatContent.json'
+
+        this.$http.get(api)
           .then(res => {
             console.log(res)
             this.data = res.data

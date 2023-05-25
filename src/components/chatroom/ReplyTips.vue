@@ -11,7 +11,7 @@
       </div>
     </button>
 
-    <button type="button" class="position-absolute top-0 end-0 btn x-icon m-0 p-0" @touchstart.prevent="clearReply"></button>
+    <button type="button" class="position-absolute top-0 end-0 btn x-icon m-0 p-0" @mousedown.left.prevent="clearReply" @touchstart.prevent="clearReply"></button>
   </div>
 </template>
 

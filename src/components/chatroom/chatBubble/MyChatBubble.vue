@@ -11,23 +11,24 @@
       <div class="position-relative">
         <p class="text-start bg-fff triangle-right raduis-10  ms-2 mb-0"
            :id="`msg-${msg.discussId}`"
-           @mousedown.right="mousedownRight([$event,msg.discussId,this])"
-           @touchstart="touchKeepFiveSeconds([$event,msg.discussId,this])"
-           @touchend="stopTimer"
+           @mousedown.right="msgToolShow([$event,msg.discussId,this])"
+           @touchstart="isPhone&&getTouchStartTime()"
+           @touchend="isPhone&&getTouchEndTime([$event,msg.discussId,this,msg])"
            style="max-width:250px;">
           <!-- 回覆訊息 -->
-        <template v-if='msg.replyId'>
-          <div class="d-flex align-items-start border-bottom text-cut-line2 ps-6 pe-4 py-4">
-            <!-- 姓氏(頭貼) -->
-            <span class="rounded-pill text-12 fw-bold-5 me-2" style="background-color:#FFC7A4;padding:3px 6px 4px 6px;">{{ msg?.replyData?.insertUser?.split('')[0] }}</span>
-            <div>
-              <!-- 姓名 -->
-              <p class="text-12 text-gray fw-bold-5" style="margin-bottom:2px;">{{ msg?.replyData?.insertUser }}</p>
-              <!-- 內容 -->
-              <p class="text-12 text-gray" style="max-height:30px;">{{ msg?.replyData?.textContent }}</p>
+          <template v-if='msg.replyId'>
+            <div class="d-flex align-items-start border-bottom text-cut-line2 ps-6 pe-4 py-4"
+                 @click.left="isPhone||goToReplyPosition(msg)">
+              <!-- 姓氏(頭貼) -->
+              <span class="rounded-pill text-12 fw-bold-5 me-2" style="background-color:#FFC7A4;padding:3px 6px 4px 6px;">{{ msg?.replyData?.insertUser?.split('')[0] }}</span>
+              <div>
+                <!-- 姓名 -->
+                <p class="text-12 text-gray fw-bold-5" style="margin-bottom:2px;">{{ msg?.replyData?.insertUser }}</p>
+                <!-- 內容 -->
+                <p class="text-12 text-gray" style="max-height:30px;">{{ msg?.replyData?.textContent }}</p>
+              </div>
             </div>
-          </div>
-        </template>
+          </template>
 
           <pre class="text-start bg-fff triangle-right raduis-10 ms-2 mb-0 ps-6 pe-4 py-2"
                :class="{'overflow-hidden':msg.textContent.length>200, 'text-success fw-bold-7':msg.testBg}"
@@ -72,11 +73,12 @@ export default {
   },
 
   computed: {
+    ...mapState(['isPhone']),
     ...mapState('chatBubble', ['isShowMsgActionPanel'])
   },
 
   methods: {
-    ...mapActions('chatBubble', ['touchKeepFiveSeconds', 'mousedownRight', 'stopTimer']),
+    ...mapActions('chatBubble', ['msgToolShow', 'getTouchStartTime', 'getTouchEndTime', 'goToReplyPosition']),
     ...mapMutations('allContentModal', ['GET_MESSAGES', 'MODAL_SHOW']),
 
     allContentShow () {
