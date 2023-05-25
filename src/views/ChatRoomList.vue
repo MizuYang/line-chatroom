@@ -59,16 +59,12 @@ export default {
   methods: {
     // 依課程代號取得討論區主題列表
     getChatroomList () {
-      const CourseNo = '0110B0031'
-      const ManNo = 'A123053153'
-
-      // const api = 'api/chatroomList.json' // 記得改成res.data
-      const api = `${process.env.VUE_APP_API_GET_CHATROMM_LIST}?CourseNo=${CourseNo}&ManNo=${ManNo}`
+      const api = 'api/chatroomList.json'
 
       this.$http.get(api)
         .then(res => {
-          console.log('依課程代號取得討論區主題列表: ', res.data.data)
-          this.cahtroomList = res.data.data
+          console.log('依課程代號取得討論區主題列表: ', res.data)
+          this.cahtroomList = res.data
           //! 排序應該是  新 -> 舊
         })
         .catch(err => {
