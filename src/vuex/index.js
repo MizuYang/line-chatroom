@@ -11,13 +11,16 @@ import msgActionPanel from '@/vuex/store/chatroom/msgActionPanel.js'
 export default createStore({
   strict: false, // 嚴謹模式
   state: {
-    isPhone: true //! 測試裝置為手機
+    isPhone: false //! 測試裝置為手機
     // const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())
 
   },
   actions: {
   },
   mutations: {
+    CHANGE_MODE (state) {
+      state.isPhone = !state.isPhone
+    }
   },
   getters: {
   },
